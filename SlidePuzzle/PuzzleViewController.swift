@@ -8,16 +8,17 @@
 
 import UIKit
 
+fileprivate let GridSize = 3
+
 class PuzzleViewController: UIViewController {
     
-    fileprivate let gridSize = 5
     fileprivate var imageViews: [[UIImageView]] = []
-    let gameBoard = TileGameBoard(size: 5)
+    let gameBoard = TileGameBoard(size: GridSize)
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor.white
+        view.backgroundColor = UIColor.black
         
         view.addSubview(gameBoard)
         gameBoard.translatesAutoresizingMaskIntoConstraints = false
