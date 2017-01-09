@@ -8,7 +8,7 @@
 
 import UIKit
 
-fileprivate let GridSize = 3
+fileprivate let GridSize = 4
 
 class PuzzleViewController: UIViewController {
     
@@ -22,10 +22,10 @@ class PuzzleViewController: UIViewController {
         
         view.addSubview(gameBoard)
         gameBoard.translatesAutoresizingMaskIntoConstraints = false
-        gameBoard.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        gameBoard.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        gameBoard.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        gameBoard.widthAnchor.constraint(equalTo: gameBoard.heightAnchor).isActive = true
+        gameBoard.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        gameBoard.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        gameBoard.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        gameBoard.heightAnchor.constraint(equalTo: gameBoard.widthAnchor).isActive = true
         
         if let image = UIImage(named: "squirrel") {
             gameBoard.setImage(image: image)
