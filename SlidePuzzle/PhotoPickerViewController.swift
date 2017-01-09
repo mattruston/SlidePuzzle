@@ -35,6 +35,8 @@ class PhotoPickerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        collectionView.register(UINib(nibName: "PhotoImageCell", bundle: nil), forCellWithReuseIdentifier: "PhotoImageCell")
+        
         askPermission()
     }
     

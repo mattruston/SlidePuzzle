@@ -8,26 +8,34 @@
 
 import UIKit
 
-fileprivate let GridSize = 4
+enum Difficulty: Int {
+    case easy = 3
+    case normal = 4
+    case difficult = 5
+}
 
 class PuzzleViewController: UIViewController {
     
     fileprivate var imageViews: [[UIImageView]] = []
-    let gameBoard = TileGameBoard(size: GridSize)
+    var gameBoard: TileGameBoard!
+    var image: UIImage?
+    var gameMode = Difficulty.normal
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor.black
+        gameBoard = TileGameBoard(size: gameMode.rawValue)
         
-        view.addSubview(gameBoard)
-        gameBoard.translatesAutoresizingMaskIntoConstraints = false
-        gameBoard.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        gameBoard.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        gameBoard.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        gameBoard.heightAnchor.constraint(equalTo: gameBoard.widthAnchor).isActive = true
-        
-        if let image = UIImage(named: "squirrel") {
+        if let image = image {
+            view.backgroundColor = UIColor.black
+            
+            view.addSubview(gameBoard)
+            gameBoard.translatesAutoresizingMaskIntoConstraints = false
+            gameBoard.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+            gameBoard.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+            gameBoard.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+            gameBoard.heightAnchor.constraint(equalTo: gameBoard.widthAnchor).isActive = true
+            
             gameBoard.setImage(image: image)
             gameBoard.shuffleTiles()
         }

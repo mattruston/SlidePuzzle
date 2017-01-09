@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = PuzzleViewController()
+        window?.rootViewController = AppNavigationController()
         window?.makeKeyAndVisible()
         
         return true

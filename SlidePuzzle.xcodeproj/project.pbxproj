@@ -15,6 +15,9 @@
 		C9B4B6D51E2438DF0028E080 /* PhotoImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B4B6D41E2438DF0028E080 /* PhotoImageCell.swift */; };
 		C9B4B6D81E2439370028E080 /* PhotoPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9B4B6D71E2439370028E080 /* PhotoPickerViewController.xib */; };
 		C9B4B6DA1E2439A60028E080 /* PhotoImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9B4B6D91E2439A60028E080 /* PhotoImageCell.xib */; };
+		C9B4B6DE1E2442500028E080 /* SelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B4B6DD1E2442500028E080 /* SelectionViewController.swift */; };
+		C9B4B6E01E2442C20028E080 /* SelectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9B4B6DF1E2442C20028E080 /* SelectionViewController.xib */; };
+		C9B4B6E21E2444C70028E080 /* AppNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B4B6E11E2444C70028E080 /* AppNavigationController.swift */; };
 		C9BCC7221E1B197E004F004B /* TileGameBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BCC7211E1B197E004F004B /* TileGameBoard.swift */; };
 		C9BCC7241E1B30DF004F004B /* TileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BCC7231E1B30DF004F004B /* TileView.swift */; };
 /* End PBXBuildFile section */
@@ -30,6 +33,9 @@
 		C9B4B6D41E2438DF0028E080 /* PhotoImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoImageCell.swift; sourceTree = "<group>"; };
 		C9B4B6D71E2439370028E080 /* PhotoPickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoPickerViewController.xib; sourceTree = "<group>"; };
 		C9B4B6D91E2439A60028E080 /* PhotoImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoImageCell.xib; sourceTree = "<group>"; };
+		C9B4B6DD1E2442500028E080 /* SelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionViewController.swift; sourceTree = "<group>"; };
+		C9B4B6DF1E2442C20028E080 /* SelectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectionViewController.xib; sourceTree = "<group>"; };
+		C9B4B6E11E2444C70028E080 /* AppNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppNavigationController.swift; sourceTree = "<group>"; };
 		C9BCC7211E1B197E004F004B /* TileGameBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileGameBoard.swift; sourceTree = "<group>"; };
 		C9BCC7231E1B30DF004F004B /* TileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -72,6 +78,9 @@
 				C93A68B01E1B0F9600BB453D /* Assets.xcassets */,
 				C93A68B21E1B0F9600BB453D /* LaunchScreen.storyboard */,
 				C93A68B51E1B0F9600BB453D /* Info.plist */,
+				C9B4B6DD1E2442500028E080 /* SelectionViewController.swift */,
+				C9B4B6DF1E2442C20028E080 /* SelectionViewController.xib */,
+				C9B4B6E11E2444C70028E080 /* AppNavigationController.swift */,
 			);
 			path = SlidePuzzle;
 			sourceTree = "<group>";
@@ -147,6 +156,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9B4B6E01E2442C20028E080 /* SelectionViewController.xib in Resources */,
 				C9B4B6DA1E2439A60028E080 /* PhotoImageCell.xib in Resources */,
 				C93A68B41E1B0F9600BB453D /* LaunchScreen.storyboard in Resources */,
 				C9B4B6D81E2439370028E080 /* PhotoPickerViewController.xib in Resources */,
@@ -166,7 +176,9 @@
 				C9BCC7241E1B30DF004F004B /* TileView.swift in Sources */,
 				C9B4B6D31E24389E0028E080 /* PhotoPickerViewController.swift in Sources */,
 				C9B4B6D51E2438DF0028E080 /* PhotoImageCell.swift in Sources */,
+				C9B4B6E21E2444C70028E080 /* AppNavigationController.swift in Sources */,
 				C93A68AA1E1B0F9600BB453D /* AppDelegate.swift in Sources */,
+				C9B4B6DE1E2442500028E080 /* SelectionViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
