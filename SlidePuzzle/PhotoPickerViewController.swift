@@ -9,12 +9,9 @@
 import Photos
 import UIKit
 
-protocol PhotoPickerViewControllerDelegate: class {
-    func didSelectImage(with data: Data, in viewController: PhotoPickerViewController)
-}
-
 class PhotoPickerViewController: UIViewController {
     @IBOutlet fileprivate weak var collectionView: UICollectionView!
+    @IBOutlet fileprivate weak var difficultySegmentedControl: UISegmentedControl!
     
     fileprivate var cellSize: CGSize {
         let size = ((self.collectionView.frame.width - 10) / 3)
@@ -30,7 +27,7 @@ class PhotoPickerViewController: UIViewController {
     fileprivate var assets: [PHAsset] = []
     fileprivate lazy var imageManager = PHCachingImageManager()
     
-    weak var delegate: PhotoPickerViewControllerDelegate?
+    weak var delegate: SelectionViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -98,12 +95,61 @@ extension PhotoPickerViewController: UICollectionViewDelegate {
         let options = PHImageRequestOptions()
         options.isSynchronous = true
         
-        imageManager.requestImageData(for: selectedAsset, options: options) { data, resultString, orientation, info in
-            if let data = data {
-                self.delegate?.didSelectImage(with: data, in: self)
+        imageManager.requestImage(for: selectedAsset, targetSize: CGSize(width: 750, height: 750), contentMode: .aspectFill, options: options) { (image, info) in
+            if let image = image {
+                var difficulty = Difficulty.normal
+                
+                switch self.difficultySegmentedControl.selectedSegmentIndex {
+                case 0:
+                    difficulty = .easy
+                case 1:
+                    difficulty = .normal
+                case 2:
+                    difficulty = .difficult
+                default:
+                    break
+                }
+                
+//                if orientation != .up {
+//                    let rotatedImage = UIImage(cgImage: image.cgImage!, scale: 2.0, orientation: .up)
+//                    self.delegate?.didSelect(image: rotatedImage, difficulty: difficulty)
+//                } else {
+                    self.delegate?.didSelect(image: image, difficulty: difficulty)
+//                }
+                
+                
             } else {
                 //TODO: error, failed to load data
             }
         }
+        
+//        imageManager.requestImageData(for: selectedAsset, options: options) { data, resultString, orientation, info in
+//            print(orientation.rawValue)
+//            if let data = data, let image = UIImage(data: data) {
+//                var difficulty = Difficulty.normal
+//                
+//                switch self.difficultySegmentedControl.selectedSegmentIndex {
+//                case 0:
+//                    difficulty = .easy
+//                case 1:
+//                    difficulty = .normal
+//                case 2:
+//                    difficulty = .difficult
+//                default:
+//                    break
+//                }
+//                
+//                if orientation != .up {
+//                    let rotatedImage = UIImage(cgImage: image.cgImage!, scale: 2.0, orientation: .up)
+//                    self.delegate?.didSelect(image: rotatedImage, difficulty: difficulty)
+//                } else {
+//                    self.delegate?.didSelect(image: image, difficulty: difficulty)
+//                }
+//                
+//                
+//            } else {
+//                //TODO: error, failed to load data
+//            }
+//        }
     }
 }

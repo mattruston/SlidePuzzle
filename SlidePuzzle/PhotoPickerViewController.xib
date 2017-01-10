@@ -12,6 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PhotoPickerViewController" customModule="SlidePuzzle" customModuleProvider="target">
             <connections>
                 <outlet property="collectionView" destination="Qlp-hK-bB3" id="PoE-Nz-BpW"/>
+                <outlet property="difficultySegmentedControl" destination="fW5-lE-DOi" id="rxY-m4-jN1"/>
                 <outlet property="view" destination="iN0-l3-epB" id="009-pS-c8K"/>
             </connections>
         </placeholder>
@@ -21,9 +22,9 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Qlp-hK-bB3">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <rect key="frame" x="0.0" y="48" width="375" height="619"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="eLb-bv-R8l">
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="5" minimumInteritemSpacing="0.0" id="eLb-bv-R8l">
                         <size key="itemSize" width="50" height="50"/>
                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
                         <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -34,14 +35,26 @@
                         <outlet property="delegate" destination="-1" id="LGZ-7j-R0a"/>
                     </connections>
                 </collectionView>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="1" translatesAutoresizingMaskIntoConstraints="NO" id="fW5-lE-DOi">
+                    <rect key="frame" x="30" y="10" width="315" height="29"/>
+                    <segments>
+                        <segment title="Easy"/>
+                        <segment title="Normal"/>
+                        <segment title="Difficult"/>
+                    </segments>
+                </segmentedControl>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="fW5-lE-DOi" secondAttribute="trailing" constant="30" id="8HV-s7-7cs"/>
+                <constraint firstItem="fW5-lE-DOi" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="8lS-KG-xaa"/>
                 <constraint firstAttribute="bottom" secondItem="Qlp-hK-bB3" secondAttribute="bottom" id="9TR-p0-3VA"/>
                 <constraint firstAttribute="trailing" secondItem="Qlp-hK-bB3" secondAttribute="trailing" id="GK4-FI-fDJ"/>
-                <constraint firstItem="Qlp-hK-bB3" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Mgz-F2-sGR"/>
+                <constraint firstItem="Qlp-hK-bB3" firstAttribute="top" secondItem="fW5-lE-DOi" secondAttribute="bottom" constant="10" id="jAx-rM-C18"/>
                 <constraint firstItem="Qlp-hK-bB3" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="lZD-x1-qO5"/>
+                <constraint firstItem="fW5-lE-DOi" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="30" id="lfz-X0-1HV"/>
             </constraints>
+            <point key="canvasLocation" x="34.5" y="108.5"/>
         </view>
     </objects>
 </document>

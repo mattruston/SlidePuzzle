@@ -92,14 +92,19 @@ class TileGameBoard: UIView {
         
         let imageSize = CGSize(width: image.size.width * image.scale, height: image.size.height * image.scale)
         
-        for x in 0..<size {
-            tiles.append([])
-            for y in 0..<size {
-                let frame = CGRect(x: CGFloat(x)/CGFloat(size) * imageSize.width, y: CGFloat(y)/CGFloat(size) * imageSize.height, width: imageSize.width/CGFloat(size), height: imageSize.height/CGFloat(size))
-                let newImage = UIImage(cgImage: originalCGImage.cropping(to: frame)!)
-                
-                tiles[x].append(Tile(x: x, y: y, image: newImage))
-                imageViews[x][y].image = newImage
+        let cropSize = (image.size.width < image.size.height ? image.size.width : image.size.height) * image.scale
+        let cropFrame = CGRect(x: (imageSize.width - cropSize) / 2, y: (imageSize.height - cropSize) / 2, width: cropSize, height: cropSize)
+        
+        if let croppedCGImage = originalCGImage.cropping(to: cropFrame) {
+            for x in 0..<size {
+                tiles.append([])
+                for y in 0..<size {
+                    let frame = CGRect(x: CGFloat(x)/CGFloat(size) * cropSize, y: CGFloat(y)/CGFloat(size) * cropSize, width: cropSize/CGFloat(size), height: cropSize/CGFloat(size))
+                    let newImage = UIImage(cgImage: croppedCGImage.cropping(to: frame)!)
+                    
+                    tiles[x].append(Tile(x: x, y: y, image: newImage))
+                    imageViews[x][y].image = newImage
+                }
             }
         }
         

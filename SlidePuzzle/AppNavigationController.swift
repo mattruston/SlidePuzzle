@@ -14,9 +14,20 @@ class AppNavigationController: UINavigationController {
         
         navigationBar.isTranslucent = false
         
-        let rootViewController = SelectionViewController()
-        rootViewController.delegate = self
-        viewControllers = [rootViewController]
+        let tabBarController = UITabBarController()
+        tabBarController.title = "Select Puzzle"
+        
+        let selectionViewController = SelectionViewController()
+        selectionViewController.delegate = self
+        selectionViewController.title = "Images"
+        
+        let photoPickerViewController = PhotoPickerViewController()
+        photoPickerViewController.delegate = self
+        photoPickerViewController.title = "Photos"
+        
+        tabBarController.viewControllers = [selectionViewController, photoPickerViewController]
+
+        viewControllers = [tabBarController]
     }
 }
 

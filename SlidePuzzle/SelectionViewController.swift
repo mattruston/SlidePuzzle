@@ -28,8 +28,6 @@ class SelectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Select Puzzle"
-        
         collectionView.register(UINib(nibName: "PhotoImageCell", bundle: nil), forCellWithReuseIdentifier: "PhotoImageCell")
     }
 }
