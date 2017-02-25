@@ -11,6 +11,8 @@
 		C93A68AC1E1B0F9600BB453D /* PuzzleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93A68AB1E1B0F9600BB453D /* PuzzleViewController.swift */; };
 		C93A68B11E1B0F9600BB453D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C93A68B01E1B0F9600BB453D /* Assets.xcassets */; };
 		C93A68B41E1B0F9600BB453D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C93A68B21E1B0F9600BB453D /* LaunchScreen.storyboard */; };
+		C99FF8111E613FF500F194A2 /* SwiftPriorityQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99FF8101E613FF500F194A2 /* SwiftPriorityQueue.swift */; };
+		C99FF8131E61405100F194A2 /* TileGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99FF8121E61405100F194A2 /* TileGame.swift */; };
 		C9B4B6D31E24389E0028E080 /* PhotoPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B4B6D21E24389E0028E080 /* PhotoPickerViewController.swift */; };
 		C9B4B6D51E2438DF0028E080 /* PhotoImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B4B6D41E2438DF0028E080 /* PhotoImageCell.swift */; };
 		C9B4B6D81E2439370028E080 /* PhotoPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9B4B6D71E2439370028E080 /* PhotoPickerViewController.xib */; };
@@ -29,6 +31,8 @@
 		C93A68B01E1B0F9600BB453D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C93A68B31E1B0F9600BB453D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C93A68B51E1B0F9600BB453D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C99FF8101E613FF500F194A2 /* SwiftPriorityQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftPriorityQueue.swift; sourceTree = "<group>"; };
+		C99FF8121E61405100F194A2 /* TileGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileGame.swift; sourceTree = "<group>"; };
 		C9B4B6D21E24389E0028E080 /* PhotoPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoPickerViewController.swift; sourceTree = "<group>"; };
 		C9B4B6D41E2438DF0028E080 /* PhotoImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoImageCell.swift; sourceTree = "<group>"; };
 		C9B4B6D71E2439370028E080 /* PhotoPickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoPickerViewController.xib; sourceTree = "<group>"; };
@@ -81,6 +85,8 @@
 				C9B4B6DD1E2442500028E080 /* SelectionViewController.swift */,
 				C9B4B6DF1E2442C20028E080 /* SelectionViewController.xib */,
 				C9B4B6E11E2444C70028E080 /* AppNavigationController.swift */,
+				C99FF8101E613FF500F194A2 /* SwiftPriorityQueue.swift */,
+				C99FF8121E61405100F194A2 /* TileGame.swift */,
 			);
 			path = SlidePuzzle;
 			sourceTree = "<group>";
@@ -171,8 +177,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C99FF8111E613FF500F194A2 /* SwiftPriorityQueue.swift in Sources */,
 				C93A68AC1E1B0F9600BB453D /* PuzzleViewController.swift in Sources */,
 				C9BCC7221E1B197E004F004B /* TileGameBoard.swift in Sources */,
+				C99FF8131E61405100F194A2 /* TileGame.swift in Sources */,
 				C9BCC7241E1B30DF004F004B /* TileView.swift in Sources */,
 				C9B4B6D31E24389E0028E080 /* PhotoPickerViewController.swift in Sources */,
 				C9B4B6D51E2438DF0028E080 /* PhotoImageCell.swift in Sources */,
