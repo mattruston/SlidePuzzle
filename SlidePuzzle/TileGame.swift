@@ -8,14 +8,14 @@
 
 import Foundation
 
-enum SlidePuzzleAction {
+enum SlidePuzzleAction: Action {
     case left
     case right
     case up
     case down
 }
 
-struct GameTile {
+struct GameTile: Equatable {
     var row: Int
     var column: Int
     
@@ -25,7 +25,11 @@ struct GameTile {
     }
 }
 
-class SlidePuzzleGame {
+func ==(lhs: GameTile, rhs: GameTile) -> Bool {
+    return lhs.column == rhs.column && rhs.row == lhs.row
+}
+
+class SlidePuzzleGame: Problem {
     var boardState = [[GameTile?]]()
     //Current Location of missing tile
     var missingTile: (Int, Int) = (0 , 0)
@@ -52,7 +56,7 @@ class SlidePuzzleGame {
         return SlidePuzzleGame(self)
     }
     
-    func getLegalActions() -> [SlidePuzzleAction] {
+    override func getLegalActions() -> [Action] {
         guard boardState.count > 0 else {
             return []
         }
@@ -84,8 +88,35 @@ class SlidePuzzleGame {
         return successor
     }
     
+    override func successorStateForAction(action: Action) -> Problem {
+        guard let action = action as? SlidePuzzleAction else {
+            return self
+        }
+        
+        //Calls the slidePuzzleAction version
+        return self.successorStateForAction(action: action)
+    }
+    
+    override func equals(_ rhs: Problem) -> Bool {
+        guard let rhs = rhs as? SlidePuzzleGame, self.size == rhs.size else {
+            return false
+        }
+        
+        if missingTile != rhs.missingTile {
+            return false
+        }
+        
+        for x in 0..<size {
+            return self.boardState[x].elementsEqual(rhs.boardState[x], by: { (lhs, rhs) -> Bool in
+                return lhs == rhs
+            })
+        }
+
+        return true
+    }
+    
     func takeAction(action: SlidePuzzleAction) {
-        guard getLegalActions().contains(action) else {
+        guard let actions = getLegalActions() as? [SlidePuzzleAction], actions.contains(action) else {
             return
         }
         
@@ -116,16 +147,20 @@ class SlidePuzzleGame {
         
         for _ in 0...(size * size * 3) {
             var options = getLegalActions().filter({ (action) -> Bool in
+                guard let action = action as? SlidePuzzleAction else {
+                    return false
+                }
                 return action != previousAction
             })
             
-            let action = options[Int(arc4random_uniform(UInt32(options.count)))]
-            takeAction(action: action)
-            previousAction = action
+            if let action = options[Int(arc4random_uniform(UInt32(options.count)))] as? SlidePuzzleAction {
+                takeAction(action: action)
+                previousAction = action
+            }
         }
     }
     
-    func isGoalState() -> Bool {
+    override func isGoalState() -> Bool {
         for row in 0..<size {
             for column in 0..<size {
                 if let tile = boardState[row][column] {
