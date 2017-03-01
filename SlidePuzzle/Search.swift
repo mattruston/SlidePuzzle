@@ -68,6 +68,7 @@ func AStarSearch(problem: Problem) -> [Action] {
             let priority = newCost + nextState.hueristic()
             
             if !visitedStates.contains(nextState) {
+                
                 visitedStates.append(nextState)
                 paths.append((newPath, newCost))
                 queue.push(item: nextState, priority: priority)

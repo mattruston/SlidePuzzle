@@ -15,29 +15,22 @@ enum Direction {
     case right
 }
 
-class Tile {
-    //The actual location the tile should be located
-    let x: Int
-    let y: Int
-    var image: UIImage?
-    
-    init(x: Int, y: Int, image: UIImage?) {
-        self.x = x
-        self.y = y
-        self.image = image
-    }
-}
-
 class TileGameBoard: UIView {
+    let game: SlidePuzzleGame
     fileprivate let containerView = UIStackView()
-    fileprivate let size: Int
-    fileprivate var missingTile: Tile?
-    
     var imageViews: [[TileView]] = []
-    var tiles: [[Tile]] = []
+    var images: [[UIImage]] = []
+    
+    fileprivate var solving = false
+    fileprivate var remainingActions: [SlidePuzzleAction] = []
+    
+    fileprivate var size: Int {
+        return game.size
+    }
     
     init(size: Int = 0) {
-        self.size = size
+        self.game = SlidePuzzleGame(size)
+        game.shuffleTiles()
         
         super.init(frame: CGRect.zero)
         
@@ -71,16 +64,12 @@ class TileGameBoard: UIView {
             containerView.addArrangedSubview(stackView)
             imageViews.append([])
             for y in 0..<size {
-                
-                let tileView = TileView()
-                tileView.delegate = self
-                tileView.image = UIImage(named: "squirrel")
-                tileView.x = x
-                tileView.y = y
-                
-                stackView.addArrangedSubview(tileView)
-                
-                imageViews[x].append(tileView)
+                let tile = TileView()
+                tile.x = x
+                tile.y = y
+                tile.delegate = self
+                stackView.addArrangedSubview(tile)
+                imageViews[x].append(tile)
             }
         }
     }
@@ -97,85 +86,70 @@ class TileGameBoard: UIView {
         
         if let croppedCGImage = originalCGImage.cropping(to: cropFrame) {
             for x in 0..<size {
-                tiles.append([])
+                images.append([])
                 for y in 0..<size {
                     let frame = CGRect(x: CGFloat(x)/CGFloat(size) * cropSize, y: CGFloat(y)/CGFloat(size) * cropSize, width: cropSize/CGFloat(size), height: cropSize/CGFloat(size))
                     let newImage = UIImage(cgImage: croppedCGImage.cropping(to: frame)!)
                     
-                    tiles[x].append(Tile(x: x, y: y, image: newImage))
-                    imageViews[x][y].image = newImage
+                    images[x].append(newImage)
                 }
-            }
-        }
-        
-        missingTile = tiles[0][0]
-    }
-    
-    func shuffleTiles() {
-        var x = 0
-        var y = 0
-        var previousDirection = Direction.up
-        
-        for _ in 0...(size * size * 3) {
-            var options: [Direction] = []
-            
-            if x > 0 && previousDirection != .right {
-                options.append(.left)
-            }
-            if x < size - 1 && previousDirection != .left {
-                options.append(.right)
-            }
-            if y > 0 && previousDirection != .down {
-                options.append(.up)
-            }
-            if y < size - 1 && previousDirection != .up {
-                options.append(.down)
-            }
-            
-            if options.count == 0 {
-                break
-            }
-            
-            let choice = options[Int(arc4random_uniform(UInt32(options.count)))]
-            previousDirection = choice
-            
-            switch choice {
-            case .up:
-                swapTiles(x: x, y: y, newX: x, newY: y - 1)
-                y = y - 1
-            case .down:
-                swapTiles(x: x, y: y, newX: x, newY: y + 1)
-                y = y + 1
-            case .left:
-                swapTiles(x: x, y: y, newX: x - 1, newY: y)
-                x = x - 1
-            case .right:
-                swapTiles(x: x, y: y, newX: x + 1, newY: y)
-                x = x + 1
             }
         }
         
         setTileImages()
     }
     
-    func swapTiles(x: Int, y: Int, newX: Int, newY: Int) {
-        if x != newX || y != newY {
-            let temp = tiles[newX][newY]
-            tiles[newX][newY] = tiles[x][y]
-            tiles[x][y] = temp
-        }
-    }
-    
     func setTileImages() {
         for x in 0..<size {
             for y in 0..<size {
-                if tiles[x][y] === missingTile {
+                if (x, y) == self.game.missingTile {
                     imageViews[x][y].image = nil
                 } else {
-                    imageViews[x][y].image = tiles[x][y].image
+                    let tiles = self.game.boardState
+                    if let tile = tiles[x][y] {
+                        imageViews[x][y].image = images[tile.row][tile.column]
+                    }
                 }
             }
         }
+    }
+    
+    func solve() {
+        if solving {
+            return
+        }
+        
+        solving = true
+        guard let actions = AStarSearch(problem: game) as? [SlidePuzzleAction] else {
+            return
+        }
+        
+        remainingActions = actions
+        takeNextAction()
+    }
+    
+    func takeNextAction() {
+        solving = true
+        
+        guard let action = remainingActions.first else {
+            solving = false
+            return
+        }
+        
+        remainingActions.removeFirst()
+        
+        game.takeAction(action: action)
+        setTileImages()
+        
+        if remainingActions.count > 0 {
+            let deadlineTime = DispatchTime.now() + 0.25
+            DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
+                self.takeNextAction()
+            }
+        } else {
+            solving = false
+        }
+        
     }
     
 }
@@ -184,21 +158,25 @@ class TileGameBoard: UIView {
 
 extension TileGameBoard: TileViewDelegate {
     func didTap(tileView: TileView) {
+        if solving {
+            return
+        }
+        
         let x = tileView.x
         let y = tileView.y
         
         //check the surrounding locations
-        if x > 0 && tiles[x - 1][y] === missingTile {
-            swapTiles(x: x, y: y, newX: x - 1, newY: y)
+        if (x - 1, y) == game.missingTile {
+            game.takeAction(action: .right)
         } else
-        if x < size - 1 && tiles[x + 1][y] === missingTile {
-            swapTiles(x: x, y: y, newX: x + 1, newY: y)
+        if (x + 1, y) == game.missingTile {
+            game.takeAction(action: .left)
         } else
-        if y > 0 && tiles[x][y - 1] === missingTile {
-            swapTiles(x: x, y: y, newX: x, newY: y - 1)
+        if (x, y - 1) == game.missingTile {
+            game.takeAction(action: .down)
         } else
-        if y < size - 1 && tiles[x][y + 1] === missingTile {
-            swapTiles(x: x, y: y, newX: x, newY: y + 1)
+        if (x, y + 1) == game.missingTile {
+            game.takeAction(action: .up)
         }
         
         setTileImages()

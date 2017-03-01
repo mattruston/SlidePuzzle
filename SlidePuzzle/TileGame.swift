@@ -63,19 +63,19 @@ class SlidePuzzleGame: Problem {
         
         var actions: [SlidePuzzleAction] = []
         
-        if missingTile.0 > 0 {
+        if missingTile.1 > 0 {
             actions.append(.up)
         }
         
-        if missingTile.0 < boardState.count - 1 {
+        if missingTile.1 < boardState[0].count - 1 {
             actions.append(.down)
         }
         
-        if missingTile.1 > 0 {
+        if missingTile.0 > 0 {
             actions.append(.left)
         }
         
-        if missingTile.1 < boardState[0].count - 1 {
+        if missingTile.0 < boardState.count - 1 {
             actions.append(.right)
         }
         
@@ -107,9 +107,12 @@ class SlidePuzzleGame: Problem {
         }
         
         for x in 0..<size {
-            return self.boardState[x].elementsEqual(rhs.boardState[x], by: { (lhs, rhs) -> Bool in
+            let answer = self.boardState[x].elementsEqual(rhs.boardState[x], by: { (lhs, rhs) -> Bool in
                 return lhs == rhs
             })
+            if answer == false {
+                return false
+            }
         }
 
         return true
@@ -122,17 +125,17 @@ class SlidePuzzleGame: Problem {
         
         switch action {
         case .up:
-            swap(first: missingTile, second: (missingTile.0 - 1, missingTile.1))
-            missingTile.0 -= 1
-        case .down:
-            swap(first: missingTile, second: (missingTile.0 + 1, missingTile.1))
-            missingTile.0 += 1
-        case .left:
             swap(first: missingTile, second: (missingTile.0, missingTile.1 - 1))
             missingTile.1 -= 1
-        case .right:
+        case .down:
             swap(first: missingTile, second: (missingTile.0, missingTile.1 + 1))
             missingTile.1 += 1
+        case .left:
+            swap(first: missingTile, second: (missingTile.0 - 1, missingTile.1))
+            missingTile.0 -= 1
+        case .right:
+            swap(first: missingTile, second: (missingTile.0 + 1, missingTile.1))
+            missingTile.0 += 1
         }
     }
     
@@ -150,7 +153,11 @@ class SlidePuzzleGame: Problem {
                 guard let action = action as? SlidePuzzleAction else {
                     return false
                 }
-                return action != previousAction
+                
+                return !((action == .up && previousAction == .down) ||
+                       (action == .down && previousAction == .up) ||
+                       (action == .left && previousAction == .right) ||
+                       (action == .right && previousAction == .left))
             })
             
             if let action = options[Int(arc4random_uniform(UInt32(options.count)))] as? SlidePuzzleAction {
@@ -172,5 +179,28 @@ class SlidePuzzleGame: Problem {
         }
         
         return true
+    }
+    
+    override func hueristic() -> Double {
+        var cost = 0.0
+        for row in 0..<size {
+            for column in 0..<size {
+                if let tile = boardState[row][column] {
+                    cost += Double(abs(tile.column - column) + abs(tile.row - row))
+                }
+            }
+        }
+        
+        return cost
+    }
+    
+    func printBoard() {
+        for row in 0..<size {
+            for column in 0..<size {
+                if let tile = boardState[row][column] {
+                    print("Row: \(tile.row) vs \(row) Column: \(tile.column) vs \(column)")
+                }
+            }
+        }
     }
 }

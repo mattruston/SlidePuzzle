@@ -48,11 +48,11 @@ class PriorityQueue<T: Any> {
             
             var j = 2 * index + 1
             
-            if j < (heap.count - 1) && (heap[j].1 < heap[j + 1].1) {
+            if j < (heap.count - 1) && (heap[j].1 > heap[j + 1].1) {
                 j += 1
             }
             
-            if !(heap[index].1 < heap[j].1) {
+            if !(heap[index].1 > heap[j].1) {
                 break
             }
             
@@ -63,7 +63,7 @@ class PriorityQueue<T: Any> {
     
     fileprivate func swim(_ index: Int) {
         var index = index
-        while index > 0 && (heap[(index - 1) / 2].1 < heap[index].1) {
+        while index > 0 && (heap[(index - 1) / 2].1 > heap[index].1) {
             swap(&heap[(index - 1) / 2], &heap[index])
             index = (index - 1) / 2
         }

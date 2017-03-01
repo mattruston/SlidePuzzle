@@ -37,8 +37,20 @@ class PuzzleViewController: UIViewController {
             gameBoard.heightAnchor.constraint(equalTo: gameBoard.widthAnchor).isActive = true
             
             gameBoard.setImage(image: image)
-            gameBoard.shuffleTiles()
+            
+            let button = UIButton()
+            button.setTitle("Solve", for: .normal)
+            button.addTarget(self, action: #selector(solve), for: .touchUpInside)
+            
+            view.addSubview(button)
+            button.translatesAutoresizingMaskIntoConstraints = false
+            button.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+            button.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         }
+    }
+    
+    func solve() {
+        gameBoard.solve()
     }
 
 }
