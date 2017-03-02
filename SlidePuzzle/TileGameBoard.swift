@@ -16,10 +16,12 @@ enum Direction {
 }
 
 class TileGameBoard: UIView {
-    let game: SlidePuzzleGame
+    var game: SlidePuzzleGame!
+    
     fileprivate let containerView = UIStackView()
     var imageViews: [[TileView]] = []
     var images: [[UIImage]] = []
+    var loadingView: UIView = UIView()
     
     fileprivate var solving = false
     fileprivate var remainingActions: [SlidePuzzleAction] = []
@@ -28,20 +30,8 @@ class TileGameBoard: UIView {
         return game.size
     }
     
-    init(size: Int = 0) {
-        self.game = SlidePuzzleGame(size)
-        game.shuffleTiles()
-        
-        super.init(frame: CGRect.zero)
-        
-        setup()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    fileprivate func setup() {
+    func setUpGameWithSize(size: Int, image: UIImage) {
+        game = SlidePuzzleGame(size)
         
         containerView.alignment = .fill
         containerView.distribution = .fillEqually
@@ -72,9 +62,22 @@ class TileGameBoard: UIView {
                 imageViews[x].append(tile)
             }
         }
+        
+        game.shuffleTiles()
+        setImage(image: image)
     }
     
-    func setImage(image: UIImage) {
+    func shuffle() {
+        game.shuffleTiles()
+        setTileImages()
+    }
+    
+    func takeAction(action: SlidePuzzleAction) {
+        game.takeAction(action: action)
+        setTileImages()
+    }
+    
+    fileprivate func setImage(image: UIImage) {
         guard let originalCGImage = image.cgImage else {
             return
         }
@@ -99,7 +102,7 @@ class TileGameBoard: UIView {
         setTileImages()
     }
     
-    func setTileImages() {
+    fileprivate func setTileImages() {
         for x in 0..<size {
             for y in 0..<size {
                 if (x, y) == self.game.missingTile {
@@ -113,45 +116,6 @@ class TileGameBoard: UIView {
             }
         }
     }
-    
-    func solve() {
-        if solving {
-            return
-        }
-        
-        solving = true
-        guard let actions = AStarSearch(problem: game) as? [SlidePuzzleAction] else {
-            return
-        }
-        
-        remainingActions = actions
-        takeNextAction()
-    }
-    
-    func takeNextAction() {
-        solving = true
-        
-        guard let action = remainingActions.first else {
-            solving = false
-            return
-        }
-        
-        remainingActions.removeFirst()
-        
-        game.takeAction(action: action)
-        setTileImages()
-        
-        if remainingActions.count > 0 {
-            let deadlineTime = DispatchTime.now() + 0.25
-            DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
-                self.takeNextAction()
-            }
-        } else {
-            solving = false
-        }
-        
-    }
-    
 }
 
 

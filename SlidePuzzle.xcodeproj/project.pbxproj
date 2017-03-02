@@ -23,6 +23,7 @@
 		C9B4B6E21E2444C70028E080 /* AppNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B4B6E11E2444C70028E080 /* AppNavigationController.swift */; };
 		C9BCC7221E1B197E004F004B /* TileGameBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BCC7211E1B197E004F004B /* TileGameBoard.swift */; };
 		C9BCC7241E1B30DF004F004B /* TileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BCC7231E1B30DF004F004B /* TileView.swift */; };
+		C9DA6AA51E68A372002E3308 /* PuzzleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9DA6AA41E68A372002E3308 /* PuzzleViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		C9B4B6E11E2444C70028E080 /* AppNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppNavigationController.swift; sourceTree = "<group>"; };
 		C9BCC7211E1B197E004F004B /* TileGameBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileGameBoard.swift; sourceTree = "<group>"; };
 		C9BCC7231E1B30DF004F004B /* TileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileView.swift; sourceTree = "<group>"; };
+		C9DA6AA41E68A372002E3308 /* PuzzleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PuzzleViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,20 +78,14 @@
 		C93A68A81E1B0F9600BB453D /* SlidePuzzle */ = {
 			isa = PBXGroup;
 			children = (
+				C9DA6AA91E68A7E4002E3308 /* SelectionScreen */,
+				C9DA6AA61E68A768002E3308 /* Puzzle */,
 				C9B4B6D61E2438F60028E080 /* PhotoPicker */,
 				C93A68A91E1B0F9600BB453D /* AppDelegate.swift */,
-				C93A68AB1E1B0F9600BB453D /* PuzzleViewController.swift */,
-				C9BCC7211E1B197E004F004B /* TileGameBoard.swift */,
-				C9BCC7231E1B30DF004F004B /* TileView.swift */,
+				C9B4B6E11E2444C70028E080 /* AppNavigationController.swift */,
 				C93A68B01E1B0F9600BB453D /* Assets.xcassets */,
 				C93A68B21E1B0F9600BB453D /* LaunchScreen.storyboard */,
 				C93A68B51E1B0F9600BB453D /* Info.plist */,
-				C9B4B6DD1E2442500028E080 /* SelectionViewController.swift */,
-				C9B4B6DF1E2442C20028E080 /* SelectionViewController.xib */,
-				C9B4B6E11E2444C70028E080 /* AppNavigationController.swift */,
-				C99FF8121E61405100F194A2 /* TileGame.swift */,
-				C99FF8141E614DFF00F194A2 /* Search.swift */,
-				C99FF8161E61F72900F194A2 /* PriorityQueue.swift */,
 			);
 			path = SlidePuzzle;
 			sourceTree = "<group>";
@@ -103,6 +99,45 @@
 				C9B4B6D91E2439A60028E080 /* PhotoImageCell.xib */,
 			);
 			name = PhotoPicker;
+			sourceTree = "<group>";
+		};
+		C9DA6AA61E68A768002E3308 /* Puzzle */ = {
+			isa = PBXGroup;
+			children = (
+				C9DA6AA81E68A7BC002E3308 /* Game */,
+				C9DA6AA71E68A77D002E3308 /* Views */,
+			);
+			name = Puzzle;
+			sourceTree = "<group>";
+		};
+		C9DA6AA71E68A77D002E3308 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C93A68AB1E1B0F9600BB453D /* PuzzleViewController.swift */,
+				C9DA6AA41E68A372002E3308 /* PuzzleViewController.xib */,
+				C9BCC7211E1B197E004F004B /* TileGameBoard.swift */,
+				C9BCC7231E1B30DF004F004B /* TileView.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		C9DA6AA81E68A7BC002E3308 /* Game */ = {
+			isa = PBXGroup;
+			children = (
+				C99FF8121E61405100F194A2 /* TileGame.swift */,
+				C99FF8141E614DFF00F194A2 /* Search.swift */,
+				C99FF8161E61F72900F194A2 /* PriorityQueue.swift */,
+			);
+			name = Game;
+			sourceTree = "<group>";
+		};
+		C9DA6AA91E68A7E4002E3308 /* SelectionScreen */ = {
+			isa = PBXGroup;
+			children = (
+				C9B4B6DD1E2442500028E080 /* SelectionViewController.swift */,
+				C9B4B6DF1E2442C20028E080 /* SelectionViewController.xib */,
+			);
+			name = SelectionScreen;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -169,6 +204,7 @@
 				C9B4B6DA1E2439A60028E080 /* PhotoImageCell.xib in Resources */,
 				C93A68B41E1B0F9600BB453D /* LaunchScreen.storyboard in Resources */,
 				C9B4B6D81E2439370028E080 /* PhotoPickerViewController.xib in Resources */,
+				C9DA6AA51E68A372002E3308 /* PuzzleViewController.xib in Resources */,
 				C93A68B11E1B0F9600BB453D /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

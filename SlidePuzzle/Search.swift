@@ -40,51 +40,61 @@ class Problem: Equatable {
 
 
 //Takes a problem and returns the actions needed
-func AStarSearch(problem: Problem) -> [Action] {
-    let queue = PriorityQueue<Problem>()
-    queue.push(item: problem, priority: 0)
-    
-    //List of paths and their costs
-    var visitedStates: [Problem] = [problem]
-    var paths: [([Action], Double)] = [([], 0)]
-    
-    while queue.count > 0 {
-        let state = queue.pop()!
-        let index = visitedStates.index(of: state)!
+func AStarSearch(problem: Problem, completion: (([Action])->())? ) {
+    DispatchQueue.global(qos: .background).async {
+        let queue = PriorityQueue<Problem>()
+        queue.push(item: problem, priority: 0)
         
-        if state.isGoalState() {
-            return paths[index].0
-        }
+        var count = 0
         
-        let actions = state.getLegalActions()
-        for action in actions {
-            let cost = 1.0
-            let nextState = state.successorStateForAction(action: action)
+        //List of paths and their costs
+        var visitedStates: [Problem] = [problem]
+        var paths: [([Action], Double)] = [([], 0)]
+        
+        while queue.count > 0 {
+            let state = queue.pop()!
+            let index = visitedStates.index(of: state)!
+            count += 1
             
-            var newPath = paths[index].0
-            newPath.append(action)
-            let oldCost = paths[index].1
-            let newCost = oldCost + cost
-            let priority = newCost + nextState.hueristic()
+            if state.isGoalState() {
+                print("\(count) : \(paths[index].0.count)")
+                DispatchQueue.main.async {
+                    completion?(paths[index].0)
+                }
+            }
             
-            if !visitedStates.contains(nextState) {
+            let actions = state.getLegalActions()
+            for action in actions {
+                let cost = 1.0
+                let nextState = state.successorStateForAction(action: action)
                 
-                visitedStates.append(nextState)
-                paths.append((newPath, newCost))
-                queue.push(item: nextState, priority: priority)
-            } else {
-                let nextIndex = visitedStates.index(of: nextState)!
-                let previousCost = paths[nextIndex].1
+                var newPath = paths[index].0
+                newPath.append(action)
+                let oldCost = paths[index].1
+                let newCost = oldCost + cost
+                let priority = newCost + nextState.hueristic()
                 
-                if previousCost > newCost {
-                    paths[nextIndex] = (newPath, newCost)
-                    queue.update(item: nextState, cost: priority)
+                if !visitedStates.contains(nextState) {
+                    
+                    visitedStates.append(nextState)
+                    paths.append((newPath, newCost))
+                    queue.push(item: nextState, priority: priority)
+                } else {
+                    let nextIndex = visitedStates.index(of: nextState)!
+                    let previousCost = paths[nextIndex].1
+                    
+                    if previousCost > newCost {
+                        paths[nextIndex] = (newPath, newCost)
+                        queue.update(item: nextState, cost: priority)
+                    }
                 }
             }
         }
+        
+        DispatchQueue.main.async {
+            completion?([])
+        }
     }
-    
-    return []
 }
 
 //fileprivate extension Array where Element: Equatable {

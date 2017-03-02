@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PuzzleViewController" customModule="SlidePuzzle" customModuleProvider="target">
+            <connections>
+                <outlet property="gameBoard" destination="y03-Kj-b4u" id="er3-gF-rmQ"/>
+                <outlet property="loadingIndicator" destination="0gg-63-Qrr" id="tXn-nT-kgf"/>
+                <outlet property="loadingView" destination="5Ar-8O-XDA" id="rYV-y0-R7Q"/>
+                <outlet property="view" destination="iN0-l3-epB" id="Vga-49-vCK"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y03-Kj-b4u" customClass="TileGameBoard" customModule="SlidePuzzle" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="146" width="375" height="375"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="y03-Kj-b4u" secondAttribute="height" multiplier="1:1" id="1ZE-i9-H1z"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BEs-Ld-17K">
+                    <rect key="frame" x="70" y="629" width="50" height="30"/>
+                    <state key="normal" title="Shuffle">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="shuffle" destination="-1" eventType="touchUpInside" id="naI-tV-4od"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qj9-1a-hrn">
+                    <rect key="frame" x="267" y="629" width="38" height="30"/>
+                    <state key="normal" title="Solve">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="solve" destination="-1" eventType="touchUpInside" id="MCF-wK-0BS"/>
+                    </connections>
+                </button>
+                <view hidden="YES" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Ar-8O-XDA">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <subviews>
+                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="0gg-63-Qrr">
+                            <rect key="frame" x="177" y="323" width="20" height="20"/>
+                        </activityIndicatorView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="0gg-63-Qrr" firstAttribute="centerX" secondItem="5Ar-8O-XDA" secondAttribute="centerX" id="3vM-XC-gwV"/>
+                        <constraint firstItem="0gg-63-Qrr" firstAttribute="centerY" secondItem="5Ar-8O-XDA" secondAttribute="centerY" id="9Hk-eB-vlL"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="5Ar-8O-XDA" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="0fu-uQ-tGw"/>
+                <constraint firstAttribute="trailing" secondItem="5Ar-8O-XDA" secondAttribute="trailing" id="Cdr-Ak-tSw"/>
+                <constraint firstAttribute="bottom" secondItem="BEs-Ld-17K" secondAttribute="bottom" constant="8" id="GoT-ay-X0q"/>
+                <constraint firstItem="y03-Kj-b4u" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="HLy-Dt-gJN"/>
+                <constraint firstAttribute="bottom" secondItem="qj9-1a-hrn" secondAttribute="bottom" constant="8" id="HPr-xu-Njb"/>
+                <constraint firstItem="BEs-Ld-17K" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="70" id="QxK-yE-Nl1"/>
+                <constraint firstItem="y03-Kj-b4u" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="b1f-DZ-fpM"/>
+                <constraint firstAttribute="bottom" secondItem="5Ar-8O-XDA" secondAttribute="bottom" id="dAA-VV-FBV"/>
+                <constraint firstAttribute="trailing" secondItem="y03-Kj-b4u" secondAttribute="trailing" id="k6w-sZ-MVN"/>
+                <constraint firstAttribute="trailing" secondItem="qj9-1a-hrn" secondAttribute="trailing" constant="70" id="mxb-Oq-OO0"/>
+                <constraint firstItem="5Ar-8O-XDA" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="uOc-dn-djy"/>
+            </constraints>
+        </view>
+    </objects>
+</document>
