@@ -61,6 +61,7 @@ func AStarSearch(problem: Problem, completion: (([Action])->())? ) {
                 DispatchQueue.main.async {
                     completion?(paths[index].0)
                 }
+                return
             }
             
             let actions = state.getLegalActions()
@@ -74,19 +75,17 @@ func AStarSearch(problem: Problem, completion: (([Action])->())? ) {
                 let newCost = oldCost + cost
                 let priority = newCost + nextState.hueristic()
                 
-                if !visitedStates.contains(nextState) {
-                    
-                    visitedStates.append(nextState)
-                    paths.append((newPath, newCost))
-                    queue.push(item: nextState, priority: priority)
-                } else {
-                    let nextIndex = visitedStates.index(of: nextState)!
+                if let nextIndex = visitedStates.index(of: nextState) {
                     let previousCost = paths[nextIndex].1
                     
                     if previousCost > newCost {
                         paths[nextIndex] = (newPath, newCost)
                         queue.update(item: nextState, cost: priority)
                     }
+                } else {
+                    visitedStates.append(nextState)
+                    paths.append((newPath, newCost))
+                    queue.push(item: nextState, priority: priority)
                 }
             }
         }
@@ -96,13 +95,3 @@ func AStarSearch(problem: Problem, completion: (([Action])->())? ) {
         }
     }
 }
-
-//fileprivate extension Array where Element: Equatable {
-//    func index(of item: Element) -> Int {
-//        for x in 0..<count {
-//            if item == self[x] {
-//                return x
-//            }
-//        }
-//    }
-//}

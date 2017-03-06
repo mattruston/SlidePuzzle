@@ -52,6 +52,9 @@ class PuzzleViewController: UIViewController {
         gameBoard.shuffle()
     }
     
+    
+    // MARK: - Solving methods
+    
     @IBAction fileprivate func solve() {
         if solving { return }
         solving = true
