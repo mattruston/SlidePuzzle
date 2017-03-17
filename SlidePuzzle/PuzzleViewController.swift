@@ -60,18 +60,12 @@ class PuzzleViewController: UIViewController {
         solving = true
         setLoading(loading: true)
         
-        AStarSearch(problem: gameBoard.game) { actions in
+        AStarSearch(problem: gameBoard.game, initialState: gameBoard.game.currentState) { actions in
             self.setLoading(loading: false)
-            
-            guard let actions = actions as? [SlidePuzzleAction] else {
-                return
-            }
             
             self.remainingActions = actions
             self.takeNextAction()
-            
         }
-
     }
     
     fileprivate func takeNextAction() {

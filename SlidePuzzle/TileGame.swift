@@ -29,148 +29,125 @@ func ==(lhs: GameTile, rhs: GameTile) -> Bool {
     return lhs.column == rhs.column && rhs.row == lhs.row
 }
 
-class SlidePuzzleGame: Problem {
-    var boardState = [[GameTile?]]()
+typealias Board = [[GameTile?]]
+struct SlidePuzzleGameState: GameState {
+    var board = Board()
     //Current Location of missing tile
     var missingTile: (Int, Int) = (0 , 0)
     let size: Int
     
-    init(_ size: Int) {
+    init(size: Int) {
         self.size = size
         
         for x in 0..<size {
-            boardState.append([])
+            board.append([])
             for y in 0..<size {
-                boardState[x].append(GameTile(row: x, column: y))
+                board[x].append(GameTile(row: x, column: y))
             }
         }
     }
     
-    init(_ game: SlidePuzzleGame) {
-        self.boardState = game.boardState
-        self.missingTile = game.missingTile
-        self.size = game.size
+    init(board: Board, missingTile: (Int, Int), size: Int) {
+        self.board = board
+        self.missingTile = missingTile
+        self.size = size
     }
     
-    func copy() -> SlidePuzzleGame {
-        return SlidePuzzleGame(self)
+    //TODO: Improve hash function
+    var hashValue: Int {
+        var cost = 0
+        for row in 0..<size {
+            for column in 0..<size {
+                if let tile = board[row][column] {
+                    let value1 = (abs(tile.column - column) + 1) * (tile.row + 1) * 10000
+                    let value2 = (abs(tile.row - row) + 1) * (tile.row + 1) * (tile.row + 1)
+                    cost ^= value1 + value2
+                }
+            }
+        }
+        
+        return cost
     }
     
-    override func getLegalActions() -> [Action] {
-        guard boardState.count > 0 else {
+    static func ==(lhs: SlidePuzzleGameState, rhs: SlidePuzzleGameState) -> Bool {
+        guard lhs.size == rhs.size else {
+            return false
+        }
+        
+        if lhs.missingTile != rhs.missingTile {
+            return false
+        }
+        
+        for x in 0..<lhs.size {
+            let answer = lhs.board[x].elementsEqual(rhs.board[x], by: { (lhs, rhs) -> Bool in
+                return lhs == rhs
+            })
+            
+            if answer == false {
+                return false
+            }
+        }
+        
+        return true
+    }
+}
+
+class SlidePuzzleGame: Problem {
+    
+    typealias S = SlidePuzzleGameState
+    typealias A = SlidePuzzleAction
+    
+    var currentState: SlidePuzzleGameState
+    
+    var size: Int {
+        return currentState.size
+    }
+    
+    init(_ size: Int) {
+        currentState = SlidePuzzleGameState(size: size)
+    }
+    
+    
+    //MARK: - Problem Protocol Methods
+    
+    func getLegalActions(_ state: SlidePuzzleGameState) -> [SlidePuzzleAction] {
+        guard state.board.count > 0 else {
             return []
         }
         
         var actions: [SlidePuzzleAction] = []
         
-        if missingTile.1 > 0 {
+        if state.missingTile.1 > 0 {
             actions.append(.up)
         }
         
-        if missingTile.1 < boardState[0].count - 1 {
+        if state.missingTile.1 < state.board[0].count - 1 {
             actions.append(.down)
         }
         
-        if missingTile.0 > 0 {
+        if state.missingTile.0 > 0 {
             actions.append(.left)
         }
         
-        if missingTile.0 < boardState.count - 1 {
+        if state.missingTile.0 < state.board.count - 1 {
             actions.append(.right)
         }
         
         return actions
     }
     
-    func successorStateForAction(action: SlidePuzzleAction) -> SlidePuzzleGame {
-        let successor = self.copy()
-        successor.takeAction(action: action)
-        return successor
-    }
-    
-    override func successorStateForAction(action: Action) -> Problem {
-        guard let action = action as? SlidePuzzleAction else {
-            return self
-        }
+    func stateSuccessor(_ state: SlidePuzzleGameState, for action: SlidePuzzleAction) -> SlidePuzzleGameState {
+        var newState = state
         
-        //Calls the slidePuzzleAction version
-        return self.successorStateForAction(action: action)
-    }
-    
-    override func equals(_ rhs: Problem) -> Bool {
-        guard let rhs = rhs as? SlidePuzzleGame, self.size == rhs.size else {
-            return false
-        }
+        takeActionOn(&newState, action: action)
         
-        if missingTile != rhs.missingTile {
-            return false
-        }
-        
-        for x in 0..<size {
-            let answer = self.boardState[x].elementsEqual(rhs.boardState[x], by: { (lhs, rhs) -> Bool in
-                return lhs == rhs
-            })
-            if answer == false {
-                return false
-            }
-        }
-
-        return true
+        return newState
     }
     
-    func takeAction(action: SlidePuzzleAction) {
-        guard let actions = getLegalActions() as? [SlidePuzzleAction], actions.contains(action) else {
-            return
-        }
-        
-        switch action {
-        case .up:
-            swap(first: missingTile, second: (missingTile.0, missingTile.1 - 1))
-            missingTile.1 -= 1
-        case .down:
-            swap(first: missingTile, second: (missingTile.0, missingTile.1 + 1))
-            missingTile.1 += 1
-        case .left:
-            swap(first: missingTile, second: (missingTile.0 - 1, missingTile.1))
-            missingTile.0 -= 1
-        case .right:
-            swap(first: missingTile, second: (missingTile.0 + 1, missingTile.1))
-            missingTile.0 += 1
-        }
-    }
-    
-    fileprivate func swap(first: (Int, Int), second: (Int, Int)) {
-        let firstTile = boardState[first.0][first.1]
-        boardState[first.0][first.1] = boardState[second.0][second.1]
-        boardState[second.0][second.1] = firstTile
-    }
-    
-    func shuffleTiles() {
-        var previousAction = SlidePuzzleAction.up
-        
-        for _ in 0...(size * size * 3) {
-            var options = getLegalActions().filter({ (action) -> Bool in
-                guard let action = action as? SlidePuzzleAction else {
-                    return false
-                }
-                
-                return !((action == .up && previousAction == .down) ||
-                       (action == .down && previousAction == .up) ||
-                       (action == .left && previousAction == .right) ||
-                       (action == .right && previousAction == .left))
-            })
-            
-            if let action = options[Int(arc4random_uniform(UInt32(options.count)))] as? SlidePuzzleAction {
-                takeAction(action: action)
-                previousAction = action
-            }
-        }
-    }
-    
-    override func isGoalState() -> Bool {
-        for row in 0..<size {
-            for column in 0..<size {
-                if let tile = boardState[row][column] {
+    func isGoal(_ state: SlidePuzzleGameState) -> Bool {
+        for row in 0..<state.size {
+            for column in 0..<state.size {
+                if let tile = state.board[row][column] {
                     if tile.column != column || tile.row != row {
                         return false
                     }
@@ -181,11 +158,11 @@ class SlidePuzzleGame: Problem {
         return true
     }
     
-    override func hueristic() -> Double {
+    func hueristic(_ state: SlidePuzzleGameState) -> Double {
         var cost = 0.0
-        for row in 0..<size {
-            for column in 0..<size {
-                if let tile = boardState[row][column] {
+        for row in 0..<state.size {
+            for column in 0..<state.size {
+                if let tile = state.board[row][column] {
                     cost += Double(abs(tile.column - column) + abs(tile.row - row))
                 }
             }
@@ -194,13 +171,61 @@ class SlidePuzzleGame: Problem {
         return cost
     }
     
-    func printBoard() {
-        for row in 0..<size {
-            for column in 0..<size {
-                if let tile = boardState[row][column] {
-                    print("Row: \(tile.row) vs \(row) Column: \(tile.column) vs \(column)")
-                }
-            }
+    
+    //MARK: - Helper Methods
+    
+    fileprivate func takeActionOn(_ state: inout SlidePuzzleGameState, action: SlidePuzzleAction) {
+        let actions = getLegalActions(state)
+        guard actions.contains(action) else {
+            return
+        }
+        
+        var missingTile = state.missingTile
+        
+        switch action {
+        case .up:
+            swap(state: &state, first: missingTile, second: (missingTile.0, missingTile.1 - 1))
+            missingTile.1 -= 1
+        case .down:
+            swap(state: &state, first: missingTile, second: (missingTile.0, missingTile.1 + 1))
+            missingTile.1 += 1
+        case .left:
+            swap(state: &state, first: missingTile, second: (missingTile.0 - 1, missingTile.1))
+            missingTile.0 -= 1
+        case .right:
+            swap(state: &state, first: missingTile, second: (missingTile.0 + 1, missingTile.1))
+            missingTile.0 += 1
+        }
+        
+        state.missingTile = missingTile
+    }
+    
+    fileprivate func swap(state: inout SlidePuzzleGameState, first: (Int, Int), second: (Int, Int)) {
+        let firstTile = state.board[first.0][first.1]
+        state.board[first.0][first.1] = state.board[second.0][second.1]
+        state.board[second.0][second.1] = firstTile
+    }
+    
+    
+    //MARK: - Current Game Methods
+    
+    func takeAction(action: SlidePuzzleAction) {
+        takeActionOn(&currentState, action: action)
+    }
+    
+    func shuffleTiles() {
+        var previousAction = SlidePuzzleAction.up
+        
+        for _ in 0...(currentState.size * currentState.size * 3) {
+            var options = getLegalActions(currentState).filter({ (action) -> Bool in
+                let upDown = (action == .up && previousAction == .down) || (action == .down && previousAction == .up)
+                let leftRight = (action == .left && previousAction == .right) || (action == .right && previousAction == .left)
+                return !(upDown || leftRight)
+            })
+            
+            let action = options[Int(arc4random_uniform(UInt32(options.count)))]
+            takeActionOn(&currentState, action: action)
+            previousAction = action
         }
     }
 }

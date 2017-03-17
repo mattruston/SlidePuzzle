@@ -103,12 +103,14 @@ class TileGameBoard: UIView {
     }
     
     fileprivate func setTileImages() {
+        let state = game.currentState
+        
         for x in 0..<size {
             for y in 0..<size {
-                if (x, y) == self.game.missingTile {
+                if (x, y) == state.missingTile {
                     imageViews[x][y].image = nil
                 } else {
-                    let tiles = self.game.boardState
+                    let tiles = state.board
                     if let tile = tiles[x][y] {
                         imageViews[x][y].image = images[tile.row][tile.column]
                     }
@@ -127,20 +129,21 @@ extension TileGameBoard: TileViewDelegate {
             return
         }
         
+        let state = game.currentState
         let x = tileView.x
         let y = tileView.y
         
         //check the surrounding locations
-        if (x - 1, y) == game.missingTile {
+        if (x - 1, y) == state.missingTile {
             game.takeAction(action: .right)
         } else
-        if (x + 1, y) == game.missingTile {
+        if (x + 1, y) == state.missingTile {
             game.takeAction(action: .left)
         } else
-        if (x, y - 1) == game.missingTile {
+        if (x, y - 1) == state.missingTile {
             game.takeAction(action: .down)
         } else
-        if (x, y + 1) == game.missingTile {
+        if (x, y + 1) == state.missingTile {
             game.takeAction(action: .up)
         }
         
