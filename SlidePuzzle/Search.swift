@@ -29,12 +29,19 @@ func AStarSearch<P: Problem>(problem: P, initialState: P.S, completion: (([P.A])
         var visitedStates: Set<P.S> = [initialState]
         var paths: [P.S : ([P.A], Double)] = [initialState : ([], 0)]
         
+        var count = 0
+        let start = Date()
+        
         while queue.count > 0 {
             let state = queue.pop()!
             let path = paths[state]!
             
+            count += 1
+            
             if problem.isGoal(state) {
                 DispatchQueue.main.async {
+                    let end = Date()
+                    print("Expanded: \(count), length: \(path.1), time: \(end.timeIntervalSince(start))")
                     completion?(path.0)
                 }
                 return

@@ -53,20 +53,19 @@ struct SlidePuzzleGameState: GameState {
         self.size = size
     }
     
-    //TODO: Improve hash function
     var hashValue: Int {
-        var cost = 0
+        var stringValue = ""
         for row in 0..<size {
             for column in 0..<size {
                 if let tile = board[row][column] {
-                    let value1 = (abs(tile.column - column) + 1) * (tile.row + 1) * 10000
-                    let value2 = (abs(tile.row - row) + 1) * (tile.row + 1) * (tile.row + 1)
-                    cost ^= value1 + value2
+                    let tileValue = tile.row * size + tile.column
+                    let char = Character(UnicodeScalar(48 + tileValue)!)
+                    stringValue.append(char)
                 }
             }
         }
         
-        return cost
+        return stringValue.hashValue
     }
     
     static func ==(lhs: SlidePuzzleGameState, rhs: SlidePuzzleGameState) -> Bool {

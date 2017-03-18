@@ -1,0 +1,5 @@
+Expanded: 3166, length: 24.0, time: 1.2408390045166
+Expanded: 1409, length: 24.0, time: 0.480756998062134
+Expanded: 98, length: 14.0, time: 0.0274289846420288
+Expanded: 1236, length: 27.0, time: 0.605567038059235
+Expanded: 184391, length: 37.0, time: 2959.43451094627
