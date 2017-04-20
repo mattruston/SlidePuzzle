@@ -43,7 +43,6 @@ class PhotoPickerViewController: UIViewController {
             DispatchQueue.main.async {
                 if status == .authorized {
                     self.loadAssets()
-                    self.collectionView.reloadData()
                 } else {
                     //TODO: error, we dont have access to photos
                 }
@@ -52,9 +51,17 @@ class PhotoPickerViewController: UIViewController {
     }
     
     fileprivate func loadAssets() {
-        let assetCollection = PHAsset.fetchAssets(with: .image, options: nil)
-        assets = assetCollection.objects(at: IndexSet(integersIn: NSRange(location: 0, length: assetCollection.count).toRange() ?? 0..<0))
-        imageManager.startCachingImages(for: assets, targetSize: imageSize, contentMode: .aspectFill, options: nil)
+        //TODO: loading screen
+        DispatchQueue.global(qos: .background).async {
+            let assetCollection = PHAsset.fetchAssets(with: .image, options: nil)
+            self.assets = assetCollection.objects(at: IndexSet(integersIn: NSRange(location: 0, length: assetCollection.count).toRange() ?? 0..<0))
+            self.imageManager.startCachingImages(for: self.assets, targetSize: self.imageSize, contentMode: .aspectFill, options: nil)
+            
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
+            
+        }
     }
     
 }
@@ -110,46 +117,12 @@ extension PhotoPickerViewController: UICollectionViewDelegate {
                     break
                 }
                 
-//                if orientation != .up {
-//                    let rotatedImage = UIImage(cgImage: image.cgImage!, scale: 2.0, orientation: .up)
-//                    self.delegate?.didSelect(image: rotatedImage, difficulty: difficulty)
-//                } else {
-                    self.delegate?.didSelect(image: image, difficulty: difficulty)
-//                }
+                self.delegate?.didSelect(image: image, difficulty: difficulty)
                 
                 
             } else {
                 //TODO: error, failed to load data
             }
         }
-        
-//        imageManager.requestImageData(for: selectedAsset, options: options) { data, resultString, orientation, info in
-//            print(orientation.rawValue)
-//            if let data = data, let image = UIImage(data: data) {
-//                var difficulty = Difficulty.normal
-//                
-//                switch self.difficultySegmentedControl.selectedSegmentIndex {
-//                case 0:
-//                    difficulty = .easy
-//                case 1:
-//                    difficulty = .normal
-//                case 2:
-//                    difficulty = .difficult
-//                default:
-//                    break
-//                }
-//                
-//                if orientation != .up {
-//                    let rotatedImage = UIImage(cgImage: image.cgImage!, scale: 2.0, orientation: .up)
-//                    self.delegate?.didSelect(image: rotatedImage, difficulty: difficulty)
-//                } else {
-//                    self.delegate?.didSelect(image: image, difficulty: difficulty)
-//                }
-//                
-//                
-//            } else {
-//                //TODO: error, failed to load data
-//            }
-//        }
     }
 }

@@ -26,6 +26,7 @@ class AppNavigationController: UINavigationController {
         photoPickerViewController.title = "Photos"
         
         tabBarController.viewControllers = [selectionViewController, photoPickerViewController]
+        tabBarController.tabBar.isTranslucent = false
 
         viewControllers = [tabBarController]
     }

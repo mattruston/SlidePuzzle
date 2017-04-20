@@ -68,8 +68,10 @@ class TileGameBoard: UIView {
     }
     
     func shuffle() {
-        game.shuffleTiles()
-        setTileImages()
+        if (!solving) {
+            game.shuffleTiles()
+            setTileImages()
+        }
     }
     
     func takeAction(action: SlidePuzzleAction) {
